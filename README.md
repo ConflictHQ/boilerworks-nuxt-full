@@ -1,13 +1,56 @@
 # Boilerworks Nuxt Full
 
-> Edge template -- Full-stack Nuxt 4 app on Cloudflare Pages. Vue 3 with Nitro server engine.
+> Full-stack Nuxt 3 application with Vue 3, Nitro server, PostgreSQL, and Drizzle ORM.
 
-**Status:** Planned
+Nuxt 3 full-stack application with session-based auth, group-based permissions, products/categories CRUD, forms engine, workflow engine, and a dark admin theme. Built with Vue 3 Composition API, Nitro server for API routes, Drizzle ORM for database access, and Tailwind CSS for styling.
 
-Nuxt 4 full-stack edge application on Cloudflare Pages. Vue 3 composition API, Nitro server engine, server-side rendering, and API routes in one framework. No separate backend needed. Ideal for Vue teams building dashboards, SaaS apps, admin panels, and full-stack applications at the edge.
+## Quick Start
 
-**Edge template** -- production deployment targets Cloudflare Pages, not Docker.
+```bash
+# Start PostgreSQL
+cd docker && docker compose up -d postgres-local && cd ..
 
-## Want to help build this?
+# Install dependencies
+npm install
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) and the [stack primer](../primers/nuxt-full/PRIMER.md) for architecture and conventions.
+# Push database schema and seed
+npm run db:push
+npm run db:seed
+
+# Start dev server
+npm run dev
+```
+
+Open http://localhost:3005 and login with `admin@boilerworks.dev` / `admin123!`.
+
+## Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Framework | Nuxt 3 + Vue 3 Composition API |
+| Server | Nitro |
+| Database | PostgreSQL 16 + Drizzle ORM |
+| Auth | Session-based (bcrypt + SHA256) |
+| Permissions | Group-based |
+| Styling | Tailwind CSS (dark theme) |
+| Testing | Vitest |
+| CI | GitHub Actions |
+
+## Docker
+
+```bash
+cd docker
+docker compose up -d
+```
+
+This starts both the Nuxt app (port 3005) and PostgreSQL (port 5450).
+
+## Testing
+
+```bash
+npm run test
+```
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.

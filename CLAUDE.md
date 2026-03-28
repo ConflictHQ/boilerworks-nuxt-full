@@ -6,17 +6,44 @@ Read it before writing any code.
 
 ## Stack
 
-- **Framework**: Nuxt 4
-- **UI**: Vue 3
-- **Server**: Nitro
-- **Database**: D1 or Turso
-- **Storage**: Cloudflare R2
-- **Deployment**: Cloudflare Pages
+- **Framework**: Nuxt 3 with Vue 3 Composition API
+- **Server**: Nitro (API routes in `server/api/`)
+- **Database**: PostgreSQL 16 with Drizzle ORM
+- **Auth**: Session-based, bcrypt + SHA256 token hashing
+- **Permissions**: Group-based, checked in route handlers
+- **Styling**: Tailwind CSS, dark theme
+- **Testing**: Vitest
+- **Docker**: `docker/docker-compose.yaml`
 
-## Edge Template
+## Commands
 
-This is an edge template. Full-stack in one framework -- SSR + client + API routes via Nitro server. Production deployment targets Cloudflare Pages, not Docker. Local development uses `nuxi dev`.
+```bash
+npm run dev          # Start dev server on port 3005
+npm run test         # Run vitest
+npm run lint         # ESLint
+npm run format:check # Prettier check
+npm run db:push      # Push schema to database
+npm run db:seed      # Seed database with sample data
+```
 
-## Status
+## Architecture
 
-This template is planned. See the [stack primer](../primers/nuxt-full/PRIMER.md) for architecture decisions and build order.
+All API routes live in `server/api/` and follow Nitro conventions. Auth middleware in `server/middleware/01.auth.ts` populates `event.context.user` on every request.
+
+Response shapes: `{ok, errors, data}` for mutations, `{ok, data, total, page, pageSize}` for lists.
+
+UUID primary keys on all tables. Soft deletes via `deleted_at`/`deleted_by` columns. Audit logging on all mutations.
+
+## Database
+
+Drizzle ORM schema in `server/database/schema.ts`. Use `npm run db:push` to sync schema, `npm run db:seed` to populate sample data.
+
+## Ports
+
+- Nuxt: 3005
+- PostgreSQL: 5450
+
+## Default Credentials
+
+- Email: `admin@boilerworks.dev`
+- Password: `admin123!`

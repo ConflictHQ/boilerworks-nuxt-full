@@ -1,0 +1,40 @@
+services:
+  nuxt-app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: boilerworks-nuxt
+    ports:
+      - "3005:3005"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgres://dbadmin:Password123@postgres-local:5432/boilerworks
+      - SESSION_SECRET=local-dev-secret-change-in-production
+    volumes:
+      - ..:/app
+      - /app/node_modules
+      - /app/.nuxt
+    depends_on:
+      postgres-local:
+        condition: service_healthy
+    command: npm run dev
+
+  postgres-local:
+    image: postgres:16-alpine
+    container_name: boilerworks-nuxt-postgres
+    ports:
+      - "5450:5432"
+    environment:
+      - POSTGRES_DB=boilerworks
+      - POSTGRES_USER=dbadmin
+      - POSTGRES_PASSWORD=Password123
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dbadmin -d boilerworks"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata:
