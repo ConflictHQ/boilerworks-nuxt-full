@@ -18,7 +18,7 @@ Read it before writing any code.
 ## Commands
 
 ```bash
-npm run dev          # Start dev server on port 3005
+npm run dev          # Start dev server on port 3000
 npm run test         # Run vitest
 npm run lint         # ESLint
 npm run format:check # Prettier check
@@ -41,7 +41,7 @@ Drizzle ORM schema in `server/database/schema.ts`. Use `npm run db:push` to sync
 ## Ports
 
 - Nuxt: 3005
-- PostgreSQL: 5450
+- PostgreSQL: 5432
 
 ## Default Credentials
 

@@ -5,7 +5,7 @@ services:
       dockerfile: docker/Dockerfile
     container_name: boilerworks-nuxt
     ports:
-      - "3005:3005"
+      - "3000:3005"
     environment:
       - NODE_ENV=development
       - DATABASE_URL=postgres://dbadmin:Password123@postgres-local:5432/boilerworks
@@ -23,7 +23,7 @@ services:
     image: postgres:16-alpine
     container_name: boilerworks-nuxt-postgres
     ports:
-      - "5450:5432"
+      - "5432:5432"
     environment:
       - POSTGRES_DB=boilerworks
       - POSTGRES_USER=dbadmin

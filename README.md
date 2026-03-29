@@ -21,7 +21,7 @@ npm run db:seed
 npm run dev
 ```
 
-Open http://localhost:3005 and login with `admin@boilerworks.dev` / `admin123!`.
+Open http://localhost:3000 and login with `admin@boilerworks.dev` / `admin123!`.
 
 ## Stack
 
@@ -43,7 +43,7 @@ cd docker
 docker compose up -d
 ```
 
-This starts both the Nuxt app (port 3005) and PostgreSQL (port 5450).
+This starts both the Nuxt app (port 3000) and PostgreSQL (port 5432).
 
 ## Testing
 
