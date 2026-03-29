@@ -2,7 +2,7 @@
 
 > Full-stack Nuxt 3 application with Vue 3, Nitro server, PostgreSQL, and Drizzle ORM.
 
-Nuxt 3 full-stack application with session-based auth, group-based permissions, products/categories CRUD, forms engine, workflow engine, and a dark admin theme. Built with Vue 3 Composition API, Nitro server for API routes, Drizzle ORM for database access, and Tailwind CSS for styling.
+Nuxt 3 full-stack application with session-based auth, group-based permissions, items/categories CRUD, forms engine, workflow engine, and a dark admin theme. Built with Vue 3 Composition API, Nitro server for API routes, Drizzle ORM for database access, and Tailwind CSS for styling.
 
 ## Quick Start
 

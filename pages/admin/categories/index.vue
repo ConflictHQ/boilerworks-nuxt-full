@@ -70,7 +70,7 @@ const columns = [
 
 <template>
   <div>
-    <UiPageHeader title="Categories" description="Manage product categories">
+    <UiPageHeader title="Categories" description="Manage item categories">
       <template #actions>
         <button class="btn-primary" @click="openCreate">New Category</button>
       </template>

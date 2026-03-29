@@ -2,12 +2,12 @@ import { z } from "zod";
 import { readBody, createError } from "h3";
 import { eq, and, isNull } from "drizzle-orm";
 import { useDB } from "~/server/database";
-import { products } from "~/server/database/schema";
+import { items } from "~/server/database/schema";
 import { requireAuth, requirePermission } from "~/server/utils/auth";
 import { ok, fail } from "~/server/utils/response";
 import { logAudit } from "~/server/utils/audit";
 
-const updateProductSchema = z.object({
+const updateItemSchema = z.object({
   name: z.string().min(1).max(255).optional(),
   slug: z.string().min(1).max(255).optional(),
   description: z.string().optional(),
@@ -19,37 +19,37 @@ const updateProductSchema = z.object({
 
 export default defineEventHandler(async (event) => {
   const user = await requireAuth(event);
-  requirePermission(user, "products.update");
+  requirePermission(user, "items.update");
 
   const id = getRouterParam(event, "id");
   if (!id) throw createError({ statusCode: 400, message: "Missing id" });
 
   const body = await readBody(event);
-  const parsed = updateProductSchema.safeParse(body);
+  const parsed = updateItemSchema.safeParse(body);
   if (!parsed.success) {
     return fail(parsed.error.issues.map((i) => i.message));
   }
 
   const db = useDB();
-  const existing = await db.query.products.findFirst({
-    where: and(eq(products.id, id), isNull(products.deletedAt)),
+  const existing = await db.query.items.findFirst({
+    where: and(eq(items.id, id), isNull(items.deletedAt)),
   });
   if (!existing) throw createError({ statusCode: 404, message: "Not found" });
 
   const [row] = await db
-    .update(products)
+    .update(items)
     .set({
       ...parsed.data,
       updatedBy: user.id,
       updatedAt: new Date(),
     })
-    .where(eq(products.id, id))
+    .where(eq(items.id, id))
     .returning();
 
   await logAudit({
     userId: user.id,
     action: "update",
-    entityType: "product",
+    entityType: "item",
     entityId: id,
     oldValues: existing as unknown as Record<string, unknown>,
     newValues: parsed.data,

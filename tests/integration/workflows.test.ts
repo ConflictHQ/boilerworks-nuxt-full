@@ -85,7 +85,7 @@ describe("POST /api/workflows/instances/:id/transition", () => {
   });
 
   it("returns 403 when user lacks workflows.execute permission", async () => {
-    const event = makeEvent(makeUser({ permissions: ["products.view"] }));
+    const event = makeEvent(makeUser({ permissions: ["items.view"] }));
     await expect((transitionHandler as Function)(event)).rejects.toMatchObject({
       statusCode: 403,
     });

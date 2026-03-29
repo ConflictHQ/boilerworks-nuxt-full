@@ -15,10 +15,10 @@ async function seed() {
 
   // Create permissions
   const permissionData = [
-    { codename: "products.create", name: "Create products" },
-    { codename: "products.update", name: "Update products" },
-    { codename: "products.delete", name: "Delete products" },
-    { codename: "products.view", name: "View products" },
+    { codename: "items.create", name: "Create items" },
+    { codename: "items.update", name: "Update items" },
+    { codename: "items.delete", name: "Delete items" },
+    { codename: "items.view", name: "View items" },
     { codename: "categories.create", name: "Create categories" },
     { codename: "categories.update", name: "Update categories" },
     { codename: "categories.delete", name: "Delete categories" },
@@ -48,7 +48,7 @@ async function seed() {
     .insert(schema.groups)
     .values([
       { name: "Administrators", description: "Full access to all resources" },
-      { name: "Editors", description: "Can manage products and categories" },
+      { name: "Editors", description: "Can manage items and categories" },
       { name: "Viewers", description: "Read-only access" },
     ])
     .onConflictDoNothing()
@@ -117,10 +117,10 @@ async function seed() {
 
   console.log("Created sample categories");
 
-  // Seed sample products
+  // Seed sample items
   if (electronics) {
     await db
-      .insert(schema.products)
+      .insert(schema.items)
       .values([
         {
           name: "Wireless Headphones",
@@ -144,7 +144,7 @@ async function seed() {
       .onConflictDoNothing();
   }
 
-  console.log("Created sample products");
+  console.log("Created sample items");
   console.log("Seed complete.");
 
   await client.end();

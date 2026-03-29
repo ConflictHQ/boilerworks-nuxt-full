@@ -7,7 +7,7 @@ const sidebarOpen = ref(true);
 const navItems = computed(() => {
   const items = [
     { label: "Dashboard", to: "/admin", icon: "heroicons:home" },
-    { label: "Products", to: "/admin/products", icon: "heroicons:cube" },
+    { label: "Items", to: "/admin/items", icon: "heroicons:cube" },
     { label: "Categories", to: "/admin/categories", icon: "heroicons:tag" },
     { label: "Forms", to: "/admin/forms", icon: "heroicons:document-text" },
     { label: "Workflows", to: "/admin/workflows", icon: "heroicons:arrow-path" },

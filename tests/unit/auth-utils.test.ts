@@ -17,21 +17,21 @@ describe("requirePermission", () => {
   it("allows superuser regardless of permissions", () => {
     const user = makeUser({ isSuperuser: true, permissions: [] });
     // Should not throw
-    expect(() => requirePermission(user, "products.create")).not.toThrow();
+    expect(() => requirePermission(user, "items.create")).not.toThrow();
   });
 
   it("allows user with the required permission", () => {
-    const user = makeUser({ permissions: ["products.create", "products.view"] });
-    expect(() => requirePermission(user, "products.create")).not.toThrow();
+    const user = makeUser({ permissions: ["items.create", "items.view"] });
+    expect(() => requirePermission(user, "items.create")).not.toThrow();
   });
 
   it("denies user without the required permission", () => {
-    const user = makeUser({ permissions: ["products.view"] });
-    expect(() => requirePermission(user, "products.create")).toThrow();
+    const user = makeUser({ permissions: ["items.view"] });
+    expect(() => requirePermission(user, "items.create")).toThrow();
   });
 
   it("denies user with no permissions", () => {
     const user = makeUser({ permissions: [] });
-    expect(() => requirePermission(user, "products.create")).toThrow();
+    expect(() => requirePermission(user, "items.create")).toThrow();
   });
 });

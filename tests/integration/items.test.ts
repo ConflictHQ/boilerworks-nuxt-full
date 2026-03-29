@@ -33,7 +33,7 @@ const mockDb = {
   select: mockSelect,
   update: mockUpdate,
   query: {
-    products: { findFirst: mockFindFirst },
+    items: { findFirst: mockFindFirst },
   },
 };
 
@@ -54,9 +54,9 @@ vi.mock("~/server/utils/audit", () => ({
 // ---------------------------------------------------------------------------
 // Import handlers (setup.ts already set defineEventHandler globally)
 // ---------------------------------------------------------------------------
-import createProduct from "~/server/api/products/index.post";
-import listProducts from "~/server/api/products/index.get";
-import deleteProduct from "~/server/api/products/[id].delete";
+import createItem from "~/server/api/items/index.post";
+import listItems from "~/server/api/items/index.get";
+import deleteItem from "~/server/api/items/[id].delete";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -77,21 +77,21 @@ function makeEvent(user: SessionUser | null = null) {
 }
 
 // ---------------------------------------------------------------------------
-// POST /api/products
+// POST /api/items
 // ---------------------------------------------------------------------------
-describe("POST /api/products", () => {
+describe("POST /api/items", () => {
   beforeEach(() => vi.clearAllMocks());
 
   it("returns 401 when no session user", async () => {
     const event = makeEvent(null);
-    await expect((createProduct as Function)(event)).rejects.toMatchObject({
+    await expect((createItem as Function)(event)).rejects.toMatchObject({
       statusCode: 401,
     });
   });
 
-  it("returns 403 when user lacks products.create permission", async () => {
-    const event = makeEvent(makeUser({ permissions: ["products.view"] }));
-    await expect((createProduct as Function)(event)).rejects.toMatchObject({
+  it("returns 403 when user lacks items.create permission", async () => {
+    const event = makeEvent(makeUser({ permissions: ["items.view"] }));
+    await expect((createItem as Function)(event)).rejects.toMatchObject({
       statusCode: 403,
     });
   });
@@ -99,59 +99,59 @@ describe("POST /api/products", () => {
   it("allows superuser regardless of permissions", async () => {
     const user = makeUser({ isSuperuser: true, permissions: [] });
     const event = makeEvent(user);
-    const product = { id: "prod-1", name: "Widget", slug: "widget", price: 1000 };
+    const item = { id: "prod-1", name: "Widget", slug: "widget", price: 1000 };
 
     mockReadBody.mockResolvedValue({ name: "Widget", slug: "widget", price: 1000 });
     mockInsert.mockReturnValue({
       values: vi.fn().mockReturnValue({
-        returning: vi.fn().mockResolvedValue([product]),
+        returning: vi.fn().mockResolvedValue([item]),
       }),
     });
 
-    const result = await (createProduct as Function)(event);
+    const result = await (createItem as Function)(event);
     expect(result.ok).toBe(true);
-    expect(result.data).toEqual(product);
+    expect(result.data).toEqual(item);
   });
 
   it("validates request body and returns errors for invalid data", async () => {
-    const event = makeEvent(makeUser({ permissions: ["products.create"] }));
+    const event = makeEvent(makeUser({ permissions: ["items.create"] }));
     mockReadBody.mockResolvedValue({ name: "", price: -5 });
 
-    const result = await (createProduct as Function)(event);
+    const result = await (createItem as Function)(event);
     expect(result.ok).toBe(false);
     expect(result.errors!.length).toBeGreaterThan(0);
   });
 
-  it("creates product with valid data and calls audit log", async () => {
-    const user = makeUser({ permissions: ["products.create"] });
+  it("creates item with valid data and calls audit log", async () => {
+    const user = makeUser({ permissions: ["items.create"] });
     const event = makeEvent(user);
-    const product = { id: "prod-1", name: "Widget", slug: "widget", price: 1000 };
+    const item = { id: "prod-1", name: "Widget", slug: "widget", price: 1000 };
 
     mockReadBody.mockResolvedValue({ name: "Widget", slug: "widget", price: 1000 });
     mockInsert.mockReturnValue({
       values: vi.fn().mockReturnValue({
-        returning: vi.fn().mockResolvedValue([product]),
+        returning: vi.fn().mockResolvedValue([item]),
       }),
     });
 
-    const result = await (createProduct as Function)(event);
+    const result = await (createItem as Function)(event);
     expect(result.ok).toBe(true);
     expect(result.data!.name).toBe("Widget");
   });
 
   it("rejects non-integer price", async () => {
-    const event = makeEvent(makeUser({ permissions: ["products.create"] }));
+    const event = makeEvent(makeUser({ permissions: ["items.create"] }));
     mockReadBody.mockResolvedValue({ name: "Widget", slug: "widget", price: 9.99 });
 
-    const result = await (createProduct as Function)(event);
+    const result = await (createItem as Function)(event);
     expect(result.ok).toBe(false);
   });
 });
 
 // ---------------------------------------------------------------------------
-// GET /api/products
+// GET /api/items
 // ---------------------------------------------------------------------------
-describe("GET /api/products", () => {
+describe("GET /api/items", () => {
   beforeEach(() => vi.clearAllMocks());
 
   // Builder mocks for select chains
@@ -183,18 +183,18 @@ describe("GET /api/products", () => {
 
   it("returns 401 when no session user", async () => {
     const event = makeEvent(null);
-    await expect((listProducts as Function)(event)).rejects.toMatchObject({
+    await expect((listItems as Function)(event)).rejects.toMatchObject({
       statusCode: 401,
     });
   });
 
   it("returns paginated list", async () => {
-    const event = makeEvent(makeUser({ permissions: ["products.view"] }));
+    const event = makeEvent(makeUser({ permissions: ["items.view"] }));
     const rows = [{ id: "p1", name: "A" }, { id: "p2", name: "B" }];
     mockGetQuery.mockReturnValue({ page: "1", pageSize: "10" });
     setupListChain(rows, 2);
 
-    const result = await (listProducts as Function)(event);
+    const result = await (listItems as Function)(event);
     expect(result.ok).toBe(true);
     expect(result.data).toEqual(rows);
     expect(result.total).toBe(2);
@@ -207,7 +207,7 @@ describe("GET /api/products", () => {
     mockGetQuery.mockReturnValue({});
     setupListChain([], 0);
 
-    const result = await (listProducts as Function)(event);
+    const result = await (listItems as Function)(event);
     expect(result.ok).toBe(true);
     expect(result.page).toBe(1);
     expect(result.pageSize).toBe(20);
@@ -215,46 +215,46 @@ describe("GET /api/products", () => {
 });
 
 // ---------------------------------------------------------------------------
-// DELETE /api/products/:id
+// DELETE /api/items/:id
 // ---------------------------------------------------------------------------
-describe("DELETE /api/products/:id", () => {
+describe("DELETE /api/items/:id", () => {
   beforeEach(() => vi.clearAllMocks());
 
   it("returns 401 when no session user", async () => {
     const event = makeEvent(null);
-    await expect((deleteProduct as Function)(event)).rejects.toMatchObject({
+    await expect((deleteItem as Function)(event)).rejects.toMatchObject({
       statusCode: 401,
     });
   });
 
-  it("returns 403 when user lacks products.delete permission", async () => {
-    const event = makeEvent(makeUser({ permissions: ["products.view"] }));
-    await expect((deleteProduct as Function)(event)).rejects.toMatchObject({
+  it("returns 403 when user lacks items.delete permission", async () => {
+    const event = makeEvent(makeUser({ permissions: ["items.view"] }));
+    await expect((deleteItem as Function)(event)).rejects.toMatchObject({
       statusCode: 403,
     });
   });
 
   it("returns 400 when id is missing", async () => {
-    const event = makeEvent(makeUser({ permissions: ["products.delete"] }));
+    const event = makeEvent(makeUser({ permissions: ["items.delete"] }));
     mockGetRouterParam.mockReturnValue(undefined);
 
-    await expect((deleteProduct as Function)(event)).rejects.toMatchObject({
+    await expect((deleteItem as Function)(event)).rejects.toMatchObject({
       statusCode: 400,
     });
   });
 
-  it("returns 404 when product not found", async () => {
-    const event = makeEvent(makeUser({ permissions: ["products.delete"] }));
+  it("returns 404 when item not found", async () => {
+    const event = makeEvent(makeUser({ permissions: ["items.delete"] }));
     mockGetRouterParam.mockReturnValue("non-existent-id");
     mockFindFirst.mockResolvedValue(undefined);
 
-    await expect((deleteProduct as Function)(event)).rejects.toMatchObject({
+    await expect((deleteItem as Function)(event)).rejects.toMatchObject({
       statusCode: 404,
     });
   });
 
-  it("soft-deletes product by setting deletedAt and deletedBy", async () => {
-    const user = makeUser({ permissions: ["products.delete"] });
+  it("soft-deletes item by setting deletedAt and deletedBy", async () => {
+    const user = makeUser({ permissions: ["items.delete"] });
     const event = makeEvent(user);
     mockGetRouterParam.mockReturnValue("prod-to-delete");
     mockFindFirst.mockResolvedValue({ id: "prod-to-delete", deletedAt: null });
@@ -264,7 +264,7 @@ describe("DELETE /api/products/:id", () => {
     });
     mockUpdate.mockReturnValue({ set: mockSetFn });
 
-    const result = await (deleteProduct as Function)(event);
+    const result = await (deleteItem as Function)(event);
     expect(result.ok).toBe(true);
     expect(mockUpdate).toHaveBeenCalled();
     expect(mockSetFn).toHaveBeenCalledWith(

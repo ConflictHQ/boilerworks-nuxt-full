@@ -111,7 +111,7 @@ export const userGroups = pgTable("user_groups", {
 });
 
 // ---------------------------------------------------------------------------
-// Products & Categories
+// Items & Categories
 // ---------------------------------------------------------------------------
 export const categories = pgTable(
   "categories",
@@ -125,7 +125,7 @@ export const categories = pgTable(
   (table) => [uniqueIndex("categories_slug_idx").on(table.slug)],
 );
 
-export const products = pgTable("products", {
+export const items = pgTable("items", {
   ...baseColumns,
   name: text("name").notNull(),
   slug: text("slug").notNull(),
@@ -263,16 +263,16 @@ export const groupPermissionsRelations = relations(
 );
 
 export const categoriesRelations = relations(categories, ({ many, one }) => ({
-  products: many(products),
+  items: many(items),
   parent: one(categories, {
     fields: [categories.parentId],
     references: [categories.id],
   }),
 }));
 
-export const productsRelations = relations(products, ({ one }) => ({
+export const itemsRelations = relations(items, ({ one }) => ({
   category: one(categories, {
-    fields: [products.categoryId],
+    fields: [items.categoryId],
     references: [categories.id],
   }),
 }));

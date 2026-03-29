@@ -9,13 +9,13 @@ const { user } = useAuth();
     <UiPageHeader title="Dashboard" description="Overview of your application" />
 
     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-      <NuxtLink to="/admin/products" class="card hover:border-brand-600 transition-colors">
+      <NuxtLink to="/admin/items" class="card hover:border-brand-600 transition-colors">
         <div class="flex items-center gap-4">
           <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-brand-600/20">
             <Icon name="heroicons:cube" class="h-6 w-6 text-brand-400" />
           </div>
           <div>
-            <p class="text-sm text-surface-400">Products</p>
+            <p class="text-sm text-surface-400">Items</p>
             <p class="text-lg font-semibold text-surface-100">Manage</p>
           </div>
         </div>

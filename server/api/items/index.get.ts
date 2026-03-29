@@ -1,6 +1,6 @@
 import { isNull, sql, eq } from "drizzle-orm";
 import { useDB } from "~/server/database";
-import { products, categories } from "~/server/database/schema";
+import { items, categories } from "~/server/database/schema";
 import { requireAuth } from "~/server/utils/auth";
 import { paginated } from "~/server/utils/response";
 import { getPaginationParams } from "~/server/utils/query";
@@ -11,9 +11,9 @@ export default defineEventHandler(async (event) => {
   const { page, pageSize, offset } = getPaginationParams(event);
   const query = getQuery(event);
 
-  const conditions = [isNull(products.deletedAt)];
+  const conditions = [isNull(items.deletedAt)];
   if (query.categoryId) {
-    conditions.push(eq(products.categoryId, String(query.categoryId)));
+    conditions.push(eq(items.categoryId, String(query.categoryId)));
   }
 
   const whereClause =
@@ -22,27 +22,27 @@ export default defineEventHandler(async (event) => {
   const [rows, countResult] = await Promise.all([
     db
       .select({
-        id: products.id,
-        name: products.name,
-        slug: products.slug,
-        description: products.description,
-        price: products.price,
-        sku: products.sku,
-        isPublished: products.isPublished,
-        categoryId: products.categoryId,
+        id: items.id,
+        name: items.name,
+        slug: items.slug,
+        description: items.description,
+        price: items.price,
+        sku: items.sku,
+        isPublished: items.isPublished,
+        categoryId: items.categoryId,
         categoryName: categories.name,
-        createdAt: products.createdAt,
-        updatedAt: products.updatedAt,
+        createdAt: items.createdAt,
+        updatedAt: items.updatedAt,
       })
-      .from(products)
-      .leftJoin(categories, eq(products.categoryId, categories.id))
+      .from(items)
+      .leftJoin(categories, eq(items.categoryId, categories.id))
       .where(whereClause)
       .limit(pageSize)
       .offset(offset)
-      .orderBy(products.name),
+      .orderBy(items.name),
     db
       .select({ count: sql<number>`count(*)::int` })
-      .from(products)
+      .from(items)
       .where(whereClause),
   ]);
 

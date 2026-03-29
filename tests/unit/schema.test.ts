@@ -18,8 +18,8 @@ describe("database schema", () => {
     expect(schema.permissions).toBeDefined();
   });
 
-  it("exports products table", () => {
-    expect(schema.products).toBeDefined();
+  it("exports items table", () => {
+    expect(schema.items).toBeDefined();
   });
 
   it("exports categories table", () => {
@@ -54,7 +54,7 @@ describe("database schema", () => {
     expect(schema.usersRelations).toBeDefined();
   });
 
-  it("exports relations for products", () => {
-    expect(schema.productsRelations).toBeDefined();
+  it("exports relations for items", () => {
+    expect(schema.itemsRelations).toBeDefined();
   });
 });

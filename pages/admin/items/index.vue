@@ -5,9 +5,9 @@ definePageMeta({ layout: "admin", middleware: ["auth"] });
 
 const page = ref(1);
 const showCreate = ref(false);
-const editingProduct = ref<Record<string, unknown> | null>(null);
+const editingItem = ref<Record<string, unknown> | null>(null);
 
-const { data, refresh, status } = await useFetch<PaginatedResult>("/api/products", {
+const { data, refresh, status } = await useFetch<PaginatedResult>("/api/items", {
   query: { page, pageSize: 20 },
   credentials: "include",
 });
@@ -28,12 +28,12 @@ function resetForm() {
 
 function openCreate() {
   resetForm();
-  editingProduct.value = null;
+  editingItem.value = null;
   showCreate.value = true;
 }
 
 function openEdit(row: Record<string, unknown>) {
-  editingProduct.value = row;
+  editingItem.value = row;
   form.value = {
     name: String(row.name ?? ""),
     slug: String(row.slug ?? ""),
@@ -47,14 +47,14 @@ function openEdit(row: Record<string, unknown>) {
 }
 
 async function save() {
-  if (editingProduct.value) {
-    await $fetch(`/api/products/${editingProduct.value.id}`, {
+  if (editingItem.value) {
+    await $fetch(`/api/items/${editingItem.value.id}`, {
       method: "PUT",
       body: form.value,
       credentials: "include",
     });
   } else {
-    await $fetch("/api/products", {
+    await $fetch("/api/items", {
       method: "POST",
       body: form.value,
       credentials: "include",
@@ -65,8 +65,8 @@ async function save() {
 }
 
 async function handleDelete(row: Record<string, unknown>) {
-  if (!confirm("Delete this product?")) return;
-  await $fetch(`/api/products/${row.id}`, {
+  if (!confirm("Delete this item?")) return;
+  await $fetch(`/api/items/${row.id}`, {
     method: "DELETE",
     credentials: "include",
   });
@@ -84,9 +84,9 @@ const columns = [
 
 <template>
   <div>
-    <UiPageHeader title="Products" description="Manage your product catalogue">
+    <UiPageHeader title="Items" description="Manage your item catalogue">
       <template #actions>
-        <button class="btn-primary" @click="openCreate">New Product</button>
+        <button class="btn-primary" @click="openCreate">New Item</button>
       </template>
     </UiPageHeader>
 
@@ -106,7 +106,7 @@ const columns = [
       @update:page="page = $event"
     />
 
-    <UiModal :open="showCreate" :title="editingProduct ? 'Edit Product' : 'New Product'" @close="showCreate = false">
+    <UiModal :open="showCreate" :title="editingItem ? 'Edit Item' : 'New Item'" @close="showCreate = false">
       <form @submit.prevent="save" class="space-y-4">
         <div>
           <label class="label">Name</label>

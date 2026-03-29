@@ -1,12 +1,12 @@
 import { z } from "zod";
 import { readBody } from "h3";
 import { useDB } from "~/server/database";
-import { products } from "~/server/database/schema";
+import { items } from "~/server/database/schema";
 import { requireAuth, requirePermission } from "~/server/utils/auth";
 import { ok, fail } from "~/server/utils/response";
 import { logAudit } from "~/server/utils/audit";
 
-const createProductSchema = z.object({
+const createItemSchema = z.object({
   name: z.string().min(1).max(255),
   slug: z.string().min(1).max(255),
   description: z.string().optional(),
@@ -18,17 +18,17 @@ const createProductSchema = z.object({
 
 export default defineEventHandler(async (event) => {
   const user = await requireAuth(event);
-  requirePermission(user, "products.create");
+  requirePermission(user, "items.create");
 
   const body = await readBody(event);
-  const parsed = createProductSchema.safeParse(body);
+  const parsed = createItemSchema.safeParse(body);
   if (!parsed.success) {
     return fail(parsed.error.issues.map((i) => i.message));
   }
 
   const db = useDB();
   const [row] = await db
-    .insert(products)
+    .insert(items)
     .values({
       ...parsed.data,
       createdBy: user.id,
@@ -39,7 +39,7 @@ export default defineEventHandler(async (event) => {
   await logAudit({
     userId: user.id,
     action: "create",
-    entityType: "product",
+    entityType: "item",
     entityId: row!.id,
     newValues: parsed.data,
   });
