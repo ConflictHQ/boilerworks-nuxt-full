@@ -44,7 +44,10 @@ watchEffect(() => {
         </div>
 
         <form @submit.prevent="handleLogin" class="space-y-4">
-          <div v-if="error" class="rounded-lg bg-red-900/30 border border-red-800 px-4 py-3 text-sm text-red-400">
+          <div
+            v-if="error"
+            class="rounded-lg bg-red-900/30 border border-red-800 px-4 py-3 text-sm text-red-400"
+          >
             {{ error }}
           </div>
 

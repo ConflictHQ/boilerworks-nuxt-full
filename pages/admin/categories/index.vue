@@ -92,7 +92,11 @@ const columns = [
       @update:page="page = $event"
     />
 
-    <UiModal :open="showCreate" :title="editingCategory ? 'Edit Category' : 'New Category'" @close="showCreate = false">
+    <UiModal
+      :open="showCreate"
+      :title="editingCategory ? 'Edit Category' : 'New Category'"
+      @close="showCreate = false"
+    >
       <form @submit.prevent="save" class="space-y-4">
         <div>
           <label class="label">Name</label>

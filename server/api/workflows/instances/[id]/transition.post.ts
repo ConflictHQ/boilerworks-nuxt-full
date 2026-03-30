@@ -36,8 +36,7 @@ export default defineEventHandler(async (event) => {
     with: { definition: true },
   });
 
-  if (!instance)
-    throw createError({ statusCode: 404, message: "Instance not found" });
+  if (!instance) throw createError({ statusCode: 404, message: "Instance not found" });
   if (instance.status !== "active")
     throw createError({
       statusCode: 400,
@@ -45,9 +44,7 @@ export default defineEventHandler(async (event) => {
     });
 
   // Validate the transition is allowed
-  const currentStepDef = instance.definition.steps?.find(
-    (s) => s.name === instance.currentStep,
-  );
+  const currentStepDef = instance.definition.steps?.find((s) => s.name === instance.currentStep);
   if (!currentStepDef)
     throw createError({
       statusCode: 400,
@@ -60,9 +57,7 @@ export default defineEventHandler(async (event) => {
   }
 
   // Check if the target step exists
-  const targetStep = instance.definition.steps?.find(
-    (s) => s.name === parsed.data.toStep,
-  );
+  const targetStep = instance.definition.steps?.find((s) => s.name === parsed.data.toStep);
   if (!targetStep) {
     return fail([`Step '${parsed.data.toStep}' not found in workflow`]);
   }

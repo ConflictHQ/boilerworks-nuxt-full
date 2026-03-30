@@ -2,10 +2,7 @@ import { z } from "zod";
 import { readBody, createError } from "h3";
 import { eq, and, isNull } from "drizzle-orm";
 import { useDB } from "~/server/database";
-import {
-  workflowDefinitions,
-  workflowInstances,
-} from "~/server/database/schema";
+import { workflowDefinitions, workflowInstances } from "~/server/database/schema";
 import { requireAuth, requirePermission } from "~/server/utils/auth";
 import { ok, fail } from "~/server/utils/response";
 import { logAudit } from "~/server/utils/audit";
@@ -29,16 +26,11 @@ export default defineEventHandler(async (event) => {
 
   const db = useDB();
   const workflow = await db.query.workflowDefinitions.findFirst({
-    where: and(
-      eq(workflowDefinitions.id, id),
-      isNull(workflowDefinitions.deletedAt),
-    ),
+    where: and(eq(workflowDefinitions.id, id), isNull(workflowDefinitions.deletedAt)),
   });
 
-  if (!workflow)
-    throw createError({ statusCode: 404, message: "Workflow not found" });
-  if (!workflow.isActive)
-    throw createError({ statusCode: 400, message: "Workflow is not active" });
+  if (!workflow) throw createError({ statusCode: 404, message: "Workflow not found" });
+  if (!workflow.isActive) throw createError({ statusCode: 400, message: "Workflow is not active" });
 
   const firstStep = workflow.steps?.[0];
   if (!firstStep)

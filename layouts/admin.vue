@@ -38,9 +38,7 @@ function isActive(to: string) {
     >
       <!-- Logo -->
       <div class="flex h-16 items-center border-b border-surface-700 px-4">
-        <span v-if="sidebarOpen" class="text-lg font-bold text-brand-400">
-          Boilerworks
-        </span>
+        <span v-if="sidebarOpen" class="text-lg font-bold text-brand-400"> Boilerworks </span>
         <span v-else class="text-lg font-bold text-brand-400">B</span>
       </div>
 
@@ -67,7 +65,9 @@ function isActive(to: string) {
       <!-- User section -->
       <div class="border-t border-surface-700 p-4">
         <div v-if="sidebarOpen" class="flex items-center gap-3">
-          <div class="flex h-8 w-8 items-center justify-center rounded-full bg-brand-600 text-sm font-medium text-white">
+          <div
+            class="flex h-8 w-8 items-center justify-center rounded-full bg-brand-600 text-sm font-medium text-white"
+          >
             {{ user?.name?.charAt(0)?.toUpperCase() ?? "?" }}
           </div>
           <div class="flex-1 min-w-0">
@@ -87,12 +87,11 @@ function isActive(to: string) {
     </aside>
 
     <!-- Main content -->
-    <div
-      class="flex-1 transition-all duration-200"
-      :class="sidebarOpen ? 'ml-64' : 'ml-16'"
-    >
+    <div class="flex-1 transition-all duration-200" :class="sidebarOpen ? 'ml-64' : 'ml-16'">
       <!-- Top bar -->
-      <header class="sticky top-0 z-20 flex h-16 items-center border-b border-surface-700 bg-surface-900/80 px-6 backdrop-blur">
+      <header
+        class="sticky top-0 z-20 flex h-16 items-center border-b border-surface-700 bg-surface-900/80 px-6 backdrop-blur"
+      >
         <button class="btn-ghost p-1" @click="sidebarOpen = !sidebarOpen">
           <Icon name="heroicons:bars-3" class="h-5 w-5" />
         </button>

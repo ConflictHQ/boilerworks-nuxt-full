@@ -23,14 +23,7 @@ export interface SessionUser {
 export interface FormFieldDefinition {
   name: string;
   label: string;
-  type:
-    | "text"
-    | "textarea"
-    | "number"
-    | "email"
-    | "select"
-    | "checkbox"
-    | "date";
+  type: "text" | "textarea" | "number" | "email" | "select" | "checkbox" | "date";
   required?: boolean;
   options?: { label: string; value: string }[];
   placeholder?: string;

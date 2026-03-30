@@ -23,7 +23,15 @@ const form = ref({
 });
 
 function resetForm() {
-  form.value = { name: "", slug: "", description: "", price: 0, sku: "", isPublished: false, categoryId: "" };
+  form.value = {
+    name: "",
+    slug: "",
+    description: "",
+    price: 0,
+    sku: "",
+    isPublished: false,
+    categoryId: "",
+  };
 }
 
 function openCreate() {
@@ -106,7 +114,11 @@ const columns = [
       @update:page="page = $event"
     />
 
-    <UiModal :open="showCreate" :title="editingItem ? 'Edit Item' : 'New Item'" @close="showCreate = false">
+    <UiModal
+      :open="showCreate"
+      :title="editingItem ? 'Edit Item' : 'New Item'"
+      @close="showCreate = false"
+    >
       <form @submit.prevent="save" class="space-y-4">
         <div>
           <label class="label">Name</label>

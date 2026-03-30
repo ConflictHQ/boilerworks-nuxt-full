@@ -15,8 +15,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     sessionSecret: process.env.SESSION_SECRET || "change-me-in-production",
     databaseUrl:
-      process.env.DATABASE_URL ||
-      "postgres://dbadmin:Password123@localhost:5450/boilerworks",
+      process.env.DATABASE_URL || "postgres://dbadmin:Password123@localhost:5450/boilerworks",
     bcryptRounds: 12,
     public: {
       appName: "Boilerworks",

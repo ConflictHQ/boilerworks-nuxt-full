@@ -3,13 +3,7 @@ import { eq, and, isNull, gt } from "drizzle-orm";
 import { createHash, randomBytes } from "crypto";
 import bcrypt from "bcryptjs";
 import { useDB } from "../database";
-import {
-  users,
-  sessions,
-  userGroups,
-  groupPermissions,
-  permissions,
-} from "../database/schema";
+import { users, sessions, userGroups, groupPermissions, permissions } from "../database/schema";
 import type { SessionUser } from "~/types";
 
 const SESSION_COOKIE = "bw_session";
@@ -19,10 +13,7 @@ function hashToken(token: string): string {
   return createHash("sha256").update(token).digest("hex");
 }
 
-export async function createSession(
-  event: H3Event,
-  userId: string,
-): Promise<void> {
+export async function createSession(event: H3Event, userId: string): Promise<void> {
   const db = useDB();
   const token = randomBytes(32).toString("hex");
   const tokenHash = hashToken(token);
@@ -53,9 +44,7 @@ export async function destroySession(event: H3Event): Promise<void> {
   deleteCookie(event, SESSION_COOKIE, { path: "/" });
 }
 
-export async function getSessionUser(
-  event: H3Event,
-): Promise<SessionUser | null> {
+export async function getSessionUser(event: H3Event): Promise<SessionUser | null> {
   const token = getCookie(event, SESSION_COOKIE);
   if (!token) return null;
 
@@ -63,10 +52,7 @@ export async function getSessionUser(
   const tokenHash = hashToken(token);
 
   const session = await db.query.sessions.findFirst({
-    where: and(
-      eq(sessions.tokenHash, tokenHash),
-      gt(sessions.expiresAt, new Date()),
-    ),
+    where: and(eq(sessions.tokenHash, tokenHash), gt(sessions.expiresAt, new Date())),
   });
 
   if (!session) return null;
@@ -135,9 +121,6 @@ export async function hashPassword(password: string): Promise<string> {
   return bcrypt.hash(password, config.bcryptRounds);
 }
 
-export async function verifyPassword(
-  password: string,
-  hash: string,
-): Promise<boolean> {
+export async function verifyPassword(password: string, hash: string): Promise<boolean> {
   return bcrypt.compare(password, hash);
 }

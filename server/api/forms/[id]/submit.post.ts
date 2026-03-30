@@ -15,15 +15,11 @@ export default defineEventHandler(async (event) => {
 
   const db = useDB();
   const form = await db.query.formDefinitions.findFirst({
-    where: and(
-      eq(formDefinitions.id, id),
-      isNull(formDefinitions.deletedAt),
-    ),
+    where: and(eq(formDefinitions.id, id), isNull(formDefinitions.deletedAt)),
   });
 
   if (!form) throw createError({ statusCode: 404, message: "Form not found" });
-  if (!form.isActive)
-    throw createError({ statusCode: 400, message: "Form is not active" });
+  if (!form.isActive) throw createError({ statusCode: 400, message: "Form is not active" });
 
   const body = await readBody(event);
   const data = body?.data;

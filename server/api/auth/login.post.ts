@@ -21,10 +21,7 @@ export default defineEventHandler(async (event) => {
 
   const db = useDB();
   const user = await db.query.users.findFirst({
-    where: and(
-      eq(users.email, parsed.data.email),
-      isNull(users.deletedAt),
-    ),
+    where: and(eq(users.email, parsed.data.email), isNull(users.deletedAt)),
   });
 
   if (!user || !user.isActive) {

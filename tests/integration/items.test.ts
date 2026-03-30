@@ -190,7 +190,10 @@ describe("GET /api/items", () => {
 
   it("returns paginated list", async () => {
     const event = makeEvent(makeUser({ permissions: ["items.view"] }));
-    const rows = [{ id: "p1", name: "A" }, { id: "p2", name: "B" }];
+    const rows = [
+      { id: "p1", name: "A" },
+      { id: "p2", name: "B" },
+    ];
     mockGetQuery.mockReturnValue({ page: "1", pageSize: "10" });
     setupListChain(rows, 2);
 

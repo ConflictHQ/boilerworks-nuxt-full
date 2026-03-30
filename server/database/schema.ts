@@ -17,12 +17,8 @@ const baseColumns = {
   id: uuid("id")
     .primaryKey()
     .default(sql`gen_random_uuid()`),
-  createdAt: timestamp("created_at", { withTimezone: true })
-    .notNull()
-    .defaultNow(),
-  updatedAt: timestamp("updated_at", { withTimezone: true })
-    .notNull()
-    .defaultNow(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   createdBy: uuid("created_by"),
   updatedBy: uuid("updated_by"),
   deletedAt: timestamp("deleted_at", { withTimezone: true }),
@@ -57,9 +53,7 @@ export const sessions = pgTable("sessions", {
     .references(() => users.id),
   tokenHash: text("token_hash").notNull().unique(),
   expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true })
-    .notNull()
-    .defaultNow(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
 // ---------------------------------------------------------------------------
@@ -221,9 +215,7 @@ export const auditLogs = pgTable("audit_logs", {
   entityId: uuid("entity_id"),
   oldValues: jsonb("old_values").$type<Record<string, unknown>>(),
   newValues: jsonb("new_values").$type<Record<string, unknown>>(),
-  createdAt: timestamp("created_at", { withTimezone: true })
-    .notNull()
-    .defaultNow(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
 // ---------------------------------------------------------------------------
@@ -248,19 +240,16 @@ export const userGroupsRelations = relations(userGroups, ({ one }) => ({
   group: one(groups, { fields: [userGroups.groupId], references: [groups.id] }),
 }));
 
-export const groupPermissionsRelations = relations(
-  groupPermissions,
-  ({ one }) => ({
-    group: one(groups, {
-      fields: [groupPermissions.groupId],
-      references: [groups.id],
-    }),
-    permission: one(permissions, {
-      fields: [groupPermissions.permissionId],
-      references: [permissions.id],
-    }),
+export const groupPermissionsRelations = relations(groupPermissions, ({ one }) => ({
+  group: one(groups, {
+    fields: [groupPermissions.groupId],
+    references: [groups.id],
   }),
-);
+  permission: one(permissions, {
+    fields: [groupPermissions.permissionId],
+    references: [permissions.id],
+  }),
+}));
 
 export const categoriesRelations = relations(categories, ({ many, one }) => ({
   items: many(items),
@@ -277,33 +266,24 @@ export const itemsRelations = relations(items, ({ one }) => ({
   }),
 }));
 
-export const formSubmissionsRelations = relations(
-  formSubmissions,
-  ({ one }) => ({
-    definition: one(formDefinitions, {
-      fields: [formSubmissions.formDefinitionId],
-      references: [formDefinitions.id],
-    }),
+export const formSubmissionsRelations = relations(formSubmissions, ({ one }) => ({
+  definition: one(formDefinitions, {
+    fields: [formSubmissions.formDefinitionId],
+    references: [formDefinitions.id],
   }),
-);
+}));
 
-export const workflowInstancesRelations = relations(
-  workflowInstances,
-  ({ one, many }) => ({
-    definition: one(workflowDefinitions, {
-      fields: [workflowInstances.workflowDefinitionId],
-      references: [workflowDefinitions.id],
-    }),
-    transitions: many(workflowTransitions),
+export const workflowInstancesRelations = relations(workflowInstances, ({ one, many }) => ({
+  definition: one(workflowDefinitions, {
+    fields: [workflowInstances.workflowDefinitionId],
+    references: [workflowDefinitions.id],
   }),
-);
+  transitions: many(workflowTransitions),
+}));
 
-export const workflowTransitionsRelations = relations(
-  workflowTransitions,
-  ({ one }) => ({
-    instance: one(workflowInstances, {
-      fields: [workflowTransitions.instanceId],
-      references: [workflowInstances.id],
-    }),
+export const workflowTransitionsRelations = relations(workflowTransitions, ({ one }) => ({
+  instance: one(workflowInstances, {
+    fields: [workflowTransitions.instanceId],
+    references: [workflowInstances.id],
   }),
-);
+}));

@@ -4,8 +4,7 @@ import bcrypt from "bcryptjs";
 import * as schema from "./schema";
 
 const DATABASE_URL =
-  process.env.DATABASE_URL ||
-  "postgres://dbadmin:Password123@localhost:5450/boilerworks";
+  process.env.DATABASE_URL || "postgres://dbadmin:Password123@localhost:5450/boilerworks";
 
 async function seed() {
   const client = postgres(DATABASE_URL, { max: 1 });

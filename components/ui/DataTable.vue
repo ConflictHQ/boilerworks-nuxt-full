@@ -42,9 +42,7 @@ defineEmits<{
             {{ col.format ? col.format(row[col.key]) : row[col.key] }}
           </td>
           <td class="text-right">
-            <button class="btn-ghost text-xs mr-1" @click="$emit('edit', row)">
-              Edit
-            </button>
+            <button class="btn-ghost text-xs mr-1" @click="$emit('edit', row)">Edit</button>
             <button class="btn-ghost text-xs text-red-400" @click="$emit('delete', row)">
               Delete
             </button>

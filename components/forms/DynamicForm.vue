@@ -26,7 +26,12 @@ function updateField(name: string, value: unknown) {
       </label>
 
       <input
-        v-if="field.type === 'text' || field.type === 'email' || field.type === 'number' || field.type === 'date'"
+        v-if="
+          field.type === 'text' ||
+          field.type === 'email' ||
+          field.type === 'number' ||
+          field.type === 'date'
+        "
         :id="field.name"
         :type="field.type"
         :placeholder="field.placeholder"

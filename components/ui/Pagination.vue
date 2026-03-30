@@ -17,7 +17,8 @@ const hasNext = computed(() => props.page < totalPages.value);
 <template>
   <div class="flex items-center justify-between py-4" v-if="total > 0">
     <p class="text-sm text-surface-400">
-      Showing {{ (page - 1) * pageSize + 1 }} to {{ Math.min(page * pageSize, total) }} of {{ total }}
+      Showing {{ (page - 1) * pageSize + 1 }} to {{ Math.min(page * pageSize, total) }} of
+      {{ total }}
     </p>
     <div class="flex gap-2">
       <button

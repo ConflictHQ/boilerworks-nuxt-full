@@ -148,7 +148,11 @@ describe("POST /api/forms/:id/submit", () => {
       deletedAt: null,
     });
 
-    const submission = { id: "sub-1", formDefinitionId: "form-1", data: { email: "test@example.com" } };
+    const submission = {
+      id: "sub-1",
+      formDefinitionId: "form-1",
+      data: { email: "test@example.com" },
+    };
     mockInsert.mockReturnValue({
       values: vi.fn().mockReturnValue({
         returning: vi.fn().mockResolvedValue([submission]),

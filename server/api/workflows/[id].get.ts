@@ -12,10 +12,7 @@ export default defineEventHandler(async (event) => {
 
   const db = useDB();
   const row = await db.query.workflowDefinitions.findFirst({
-    where: and(
-      eq(workflowDefinitions.id, id),
-      isNull(workflowDefinitions.deletedAt),
-    ),
+    where: and(eq(workflowDefinitions.id, id), isNull(workflowDefinitions.deletedAt)),
   });
 
   if (!row) throw createError({ statusCode: 404, message: "Not found" });

@@ -25,16 +25,16 @@ Open http://localhost:3000 and login with `admin@boilerworks.dev` / `admin123!`.
 
 ## Stack
 
-| Layer | Technology |
-|-------|-----------|
-| Framework | Nuxt 3 + Vue 3 Composition API |
-| Server | Nitro |
-| Database | PostgreSQL 16 + Drizzle ORM |
-| Auth | Session-based (bcrypt + SHA256) |
-| Permissions | Group-based |
-| Styling | Tailwind CSS (dark theme) |
-| Testing | Vitest |
-| CI | GitHub Actions |
+| Layer       | Technology                      |
+| ----------- | ------------------------------- |
+| Framework   | Nuxt 3 + Vue 3 Composition API  |
+| Server      | Nitro                           |
+| Database    | PostgreSQL 16 + Drizzle ORM     |
+| Auth        | Session-based (bcrypt + SHA256) |
+| Permissions | Group-based                     |
+| Styling     | Tailwind CSS (dark theme)       |
+| Testing     | Vitest                          |
+| CI          | GitHub Actions                  |
 
 ## Docker
 
