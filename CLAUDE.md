@@ -18,7 +18,7 @@ Read it before writing any code.
 ## Commands
 
 ```bash
-npm run dev          # Start dev server on port 3000
+npm run dev          # Start dev server on port 3005
 npm run test         # Run vitest
 npm run lint         # ESLint
 npm run format:check # Prettier check

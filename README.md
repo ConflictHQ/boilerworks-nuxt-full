@@ -21,7 +21,7 @@ npm run db:seed
 npm run dev
 ```
 
-Open http://localhost:3000 and login with `admin@boilerworks.dev` / `admin123!`.
+Open http://localhost:3005 and login with `admin@boilerworks.dev` / `admin123!`.
 
 ## Stack
 
