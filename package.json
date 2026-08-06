@@ -41,7 +41,7 @@
     "@nuxt/eslint": "^0.7.0",
     "@nuxt/icon": "^1.0.0",
     "@nuxt/test-utils": "^3.17.0",
-    "@nuxtjs/color-mode": "^3.5.0",
+    "@nuxtjs/color-mode": "^4.0.0",
     "@nuxtjs/tailwindcss": "^6.13.0",
     "@types/bcryptjs": "^2.4.0",
     "@vitejs/plugin-vue": "^6.0.5",
